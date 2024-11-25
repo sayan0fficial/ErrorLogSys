@@ -1,0 +1,47 @@
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AppBar, Toolbar, Button, Container, Typography } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom'; // Use for routing links
+import EventLogForm from './components/eventLogForm';
+import EventLogList from './components/eventLogList';
+
+const App = () => {
+  const [eventLogs, setEventLogs] = useState([]);
+
+  const handleAddEvent = (newEvent) => {
+    setEventLogs([newEvent, ...eventLogs]);
+  };
+
+  return (
+    <Router>
+      <div>
+        <AppBar position="static" color="transparent">
+          <Toolbar>
+            <Typography variant="h5" style={{ flexGrow: 1 }}>
+              Event Logging System
+            </Typography>
+            <Button color="success" component={RouterLink} to="/addlogs">
+              <b>Add Event Log</b>
+            </Button>
+            <Button color="secondary" component={RouterLink} to="/viewlogs">
+              <b>View Event Logs</b>
+            </Button>
+          </Toolbar>
+        </AppBar>
+        
+       {/* main content */}
+        <Container style={{ marginTop: '20px' }}>
+          <Routes>
+            <Route
+              path="/addlogs"
+              element={<EventLogForm onAdd={(newEvent) => handleAddEvent(newEvent)} />}
+            />
+            <Route path="/viewlogs" element={<EventLogList eventLogs={eventLogs} />} />
+          </Routes>
+        </Container>
+      </div>
+    </Router>
+  );
+};
+
+export default App;
